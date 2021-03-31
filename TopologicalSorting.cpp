@@ -175,7 +175,11 @@ class KahnAlgo : public Graph
                             Q.push(v);
                     }
                 }
-            } cout << endl;   
+            } cout << endl; 
+
+            // If the Given graph is not DAG and that case can be added simply by storing the result in a vector
+            // And comaring the size of that vector with number of vertex.
+            // if (vector.size() != numOfVertex)  {Given graph is not DAG.}
         }
 };
 
