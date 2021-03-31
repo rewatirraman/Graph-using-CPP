@@ -117,12 +117,6 @@ class Graph
                 discoveryTime_DFS[i] = -1;
                 completionTime_DFS[i] = -1;
             }
-
-            // for (int i = 0; i < numOfVertex; i++)
-            // {
-            //     cout << color_DFS[i] << " ";
-            // } cout << endl;
-            
             
             color_DFS[src] = "GREY";
             parent_DFS[src] = -1;
