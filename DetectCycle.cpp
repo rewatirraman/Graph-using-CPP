@@ -119,9 +119,73 @@ class DirectedGraph : public Graph
 };
 
 
+class UnDirectedGraph : public Graph
+{
+    string *color;
+    int *parent;
+    bool isCyclic = false;
+
+    void checkForCycle_Util(map<int, list<int>> &myList, int u)
+    {
+        color[u] = "GREY";
+    
+        for (auto v : myList[u])
+        {
+            if (color[v] == "WHITE") {
+                // This node is not visited.
+                parent[v] = u;
+                checkForCycle_Util(myList, v);
+            } 
+            else if ( (color[v] == "GREY") && (parent[v] != u) )
+            {
+                // Back edge found, hence cycle exist in the graph.
+                isCyclic = true;
+            }
+        }
+        color[u] = "BLACK";      
+    }
+
+    public:
+        UnDirectedGraph(){}
+        UnDirectedGraph(int v) : Graph(v) {}
+    
+        void checkForCycle()
+        {
+            color = new string[getvertexCount()];
+            parent = new int[getvertexCount()];
+
+            map<int, list<int>> myList = getAdjList();
+            
+            for (int i = 0; i < getvertexCount(); i++)
+            {
+                color[i] = "WHITE";
+                parent[i] = -1;
+            }
+            
+            for (auto rows : myList)
+            {
+                int u  = rows.first;
+                if (color[u] == "WHITE")
+                    checkForCycle_Util(myList, u);
+            }
+
+            // for (int i = 0; i < getvertexCount() ; i++)
+            // {
+            //     cout << color[i] << " ";
+            // } cout << endl;
+            
+            if (isCyclic)
+                cout << "Graph contains cycle." << endl;
+            else
+                cout << "Graph does not contains cycle." << endl;
+                
+        }
+};
+
 int main()
 {
-/*This Graph contains cycle in it.*/
+/*Directed Graph Test Cases*/
+    /*This Graph contains cycle in it.*/
     // DirectedGraph g1(4);
     // g1.addEdge(0, 1);
     // g1.addEdge(0, 2);
@@ -132,7 +196,7 @@ int main()
     // g1.printGraph();
     // g1.checkForCycle();
 
-/*This graph does not contains cycle.*/
+    /*This graph does not contains cycle.*/
     // DirectedGraph g2(4);
     // g2.addEdge(0, 1);
     // g2.addEdge(0, 2);
@@ -140,5 +204,22 @@ int main()
     // g2.addEdge(2, 3);
     // g2.printGraph();
     // g2.checkForCycle();
+
+/*Undirected Graph test cases.*/
+    /*This graph contains cycle.*/
+    UnDirectedGraph g3(4);
+    g3.addEdge(1, 0, true);
+    g3.addEdge(0, 2, true);
+    g3.addEdge(2, 1, true);
+    g3.addEdge(2, 3, true);
+    g3.printGraph();
+    g3.checkForCycle();
+
+    /*This graph does not contains cycle.*/
+    UnDirectedGraph g4(3);
+    g4.addEdge(0, 1);
+    g4.addEdge(1, 2);  
+    g4.printGraph();
+    g4.checkForCycle();  
     return 0;
 }
