@@ -196,63 +196,81 @@ Spanning Tree
     - ST is maximally acyclic i.e if we add even one edge then graph will become cyclic.
 
 
-------------------------------------------------
-How to find number of spanning tree in the graph
-------------------------------------------------
-    1. If graph is complete graph with n vertices (or) number of labelled trees (not binary trees) with n veritces.?
+    ------------------------------------------------
+    How to find number of spanning tree in the graph
+    ------------------------------------------------
+        1. If graph is complete graph with n vertices (or) number of labelled trees (not binary trees) with n veritces.?
 
-        ==> Use Cayley's formula
+            ==> Use Cayley's formula
 
-        n^(n-2)
+            n^(n-2)
 
-    2. If the Graph is not complete, use Kirchhoff's theorem
+        2. If the Graph is not complete, use Kirchhoff's theorem
 
-        a. Create Adjacency matrix for the given graph.
-        b. Replace the diagonal elements with the degree of the corresponding node.
-        c. Replace all non-diagonal 1's with -1.
-        d. Calculate co-factor of any element >> This cofactor will give the number of spanning tree for that graph.
-
-
----------------------
-Minimum spanning tree
----------------------
-    - Spanning tree with the minimum cost in a weighted graph.
-    - There can be several MST with the same weight.
-
-    *Application*
-        - Network design of telephone, electrical, internet....
-        - Approximation algo for NP hard problems :  eg. Travelling salesman problem, steiner tree.
-
--------------
-MST Algorithm
--------------
-    1. Kruskal  (Greedily picks edges with minimum weight.)
-        - Time : O(m*log(n))
-        - uses disjoint set approach.
-    2. Prim's   (Greedily picks Vertices with minimum distance from the source node.)
-        - Time : O(m*log(n))
-        - uses min heap approach.
+            a. Create Adjacency matrix for the given graph.
+            b. Replace the diagonal elements with the degree of the corresponding node.
+            c. Replace all non-diagonal 1's with -1.
+            d. Calculate co-factor of any element >> This cofactor will give the number of spanning tree for that graph.
 
 
+    ---------------------
+    Minimum spanning tree
+    ---------------------
+        - Spanning tree with the minimum cost in a weighted graph.
+        - There can be several MST with the same weight.
+
+        *Application*
+            - Network design of telephone, electrical, internet....
+            - Approximation algo for NP hard problems :  eg. Travelling salesman problem, steiner tree.
 
     -------------
-    Kruska's algo
+    MST Algorithm
     -------------
-        1. Sort all the edges in non-decreasing order of there edge weight.
-        2. Create a disjoint set for all the vertices.
-        3. Creat a empty set (result_set) to track all the edges in the spanning tree.
-        4. Pick edge u-v one by one in sorted order by there edge weight.
-            a. if set(u) != set(v)      --> this means by adding this edge there won't be any cycle in the spanning tree.
-                ==> Add this edge into the result_set.
-                ==> join the set u and v.
-            b. if set(u) == set(v)      --> this means by adding this edge it will form a cycle.
-                ==> Do nothing.
+        1. Kruskal  (Greedily picks edges with minimum weight.)
+            - Time : O(m*log(n))
+            - uses disjoint set approach.
+        2. Prim's   (Greedily picks Vertices with minimum distance from the source node.)
+            - Time : O(m*log(n))
+            - uses min heap approach.
 
-    -----------
-    Prim's algo
-    -----------
+        -------------
+        Kruskal's algo
+        -------------
+            1. Sort all the edges in non-decreasing order of there edge weight.
+            2. Create a disjoint set for all the vertices.
+            3. Creat a empty set (result_set) to track all the edges in the spanning tree.
+            4. Pick edge u-v one by one in sorted order by there edge weight.
+                a. if set(u) != set(v)      --> this means by adding this edge there won't be any cycle in the spanning tree.
+                    ==> Add this edge into the result_set.
+                    ==> join the set u and v.
+                b. if set(u) == set(v)      --> this means by adding this edge it will form a cycle.
+                    ==> Do nothing.
 
+        -----------
+        Prim's algo
+        -----------
+            1. Create a mstSet that keeps track of all the vertices included in the MST.
+            2. Assign a key value to all the vertices. initialize them with INT_MAX, assign key value for the start vertex = 0.
+            3. From all the vertices pick one vertex u with less key value and not included in the  mstList.
+                a. Include this vertex u to the mstSet.
+                b. update key value of all the vertices adjacent to u.
 
+        
+-------------
+Tarjan's algo   `TODO`
+-------------
+    - Tarjan's algo is used to determine the strongly connected component in a graph.
+    - This requires only one DFS traversal.
+    - It is based on Back edge & cross edge.
+![img_6](img_6.png)
+    
+    - Algo:
+        1. While DFS traversal we maintain discovery time & rank (node with lowest discovery time) for each node.
+        2. Push the node into a stack also, keep track of a boolean array to know which all vertex are available in the stack.
+        3. If we find any back edge then we need to update the rank of the current node u
+            rank(u) = min(rank(u), discovery(v));
+            *Back edge can be found with the help of stack if the node is already visited and it also exit in the current stack*
+        
 
 
 
